@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DataAccess\Context\Configurations\" />
+    <Folder Include="DataAccess\Context\Interceptors\" />
+    <Folder Include="DataAccess\Migrations\" />
+    <Folder Include="DataAccess\Repositories\IRepositories\" />
+    <Folder Include="DataAccess\Repositories\UnitOfWork\" />
+    <Folder Include="Models\Enums\" />
+    <Folder Include="Models\Contract\" />
+    <Folder Include="Constants\" />
+  </ItemGroup>
+
+</Project>
