@@ -17,6 +17,8 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using DATA.DataAccess.Repositories.UnitOfWork;
+using CORE.Services.IServices;
+using CORE.Services;
 
 namespace API
 {
@@ -112,6 +114,7 @@ namespace API
 
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddMemoryCache();
 
