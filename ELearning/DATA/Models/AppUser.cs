@@ -15,5 +15,6 @@ namespace DATA.Models
         public ICollection<Report> ReportsMade { get; set; } = new List<Report>();
         public ICollection<Report> ReportsReceived { get; set; } = new List<Report>();
         public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
     }
 }
