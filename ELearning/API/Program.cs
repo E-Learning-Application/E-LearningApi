@@ -115,6 +115,7 @@ namespace API
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ILanguageService, LanguageService>();
 
             builder.Services.AddMemoryCache();
 
@@ -122,18 +123,8 @@ namespace API
 
             app.MapOpenApi();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            else
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/openapi/v1.json", "v1");
-                    options.RoutePrefix = string.Empty;
-                });
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.Use(async (context, next) =>
             {

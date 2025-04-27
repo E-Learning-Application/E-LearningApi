@@ -15,9 +15,11 @@ namespace DATA.DataAccess.Repositories.IRepositories
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> criteria, string[] includes = null, Expression<Func<T, object>> sortingExpression = null, OrderBy sortingDirection = OrderBy.Ascending);
         Task<T> AddOrUpdateAsync(T entity);
         void Delete(T entity);
+        void Delete(IEnumerable<T> entities);
         void Attach(T entity);
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
         Task<bool> CheckAllAsync(Expression<Func<T, bool>> criteria, string[] includes);
         Task<bool> CheckAnyAsync(Expression<Func<T, bool>> criteria, string[] includes);
+        void UpdateRange(IEnumerable<T> entities);
     }
 }

@@ -143,5 +143,15 @@ namespace DATA.DataAccess.Repositories
 
             return await query.AnyAsync(criteria);
         }
+
+        public void Delete(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
+        }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().UpdateRange(entities);
+        }
     }
 }

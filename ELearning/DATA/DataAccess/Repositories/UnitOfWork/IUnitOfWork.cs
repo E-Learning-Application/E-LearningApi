@@ -11,6 +11,7 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
     public interface IUnitOfWork : IDisposable
     {
         IBaseRepository<AppUser> AppUsers { get; }
+        IBaseRepository<Language> Languages { get; }
 
         Task<int> CommitAsync();
 
