@@ -19,9 +19,16 @@ namespace API.Controllers
         }
         [HttpPost("add-languages")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> AddLanguages([FromBody] List<CreateLanguageDto> languages)
+        public async Task<IActionResult> AddLanguagesAsync([FromBody] List<CreateLanguageDto> languages)
         {
             var result = await _languageService.CreateLanguagesAsync(languages);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpDelete("remove-languages")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> RemoveLanguagesAsync(HashSet<int> languagesIds)
+        {
+            var result = await _languageService.RemoveLanguagesAsync(languagesIds);
             return StatusCode(result.StatusCode, result);
         }
     }

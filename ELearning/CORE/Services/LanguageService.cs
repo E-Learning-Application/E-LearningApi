@@ -40,9 +40,31 @@ namespace CORE.Services
                 var createdLanguages = _mapper.Map<List<GetLanguageDto>>(languages);
                 return new ResponseDto<List<GetLanguageDto>>()
                 {
-                    StatusCode = 200,
+                    StatusCode = 201,
                     Message = "Languages created successfully",
                     Data = createdLanguages
+                };
+            }
+        }
+
+        public async Task<ResponseDto<List<int>>> RemoveLanguagesAsync(HashSet<int> languagesIds)
+        {
+            var languages = await _unitOfWork.Languages.FindAsync(l => languagesIds.Contains(l.Id), 1, 5000);
+            _unitOfWork.Languages.Delete(languages);
+            var changes = await _unitOfWork.CommitAsync();
+            if (changes == 0)
+                return new ResponseDto<List<int>>()
+                {
+                    StatusCode = 500,
+                    Message = "Error while deleting languages",
+                };
+            else
+            {
+                return new ResponseDto<List<int>>()
+                {
+                    StatusCode = 200,
+                    Message = "Languages deleted successfully",
+                    Data = languages.Select(l => l.Id).ToList()
                 };
             }
         }

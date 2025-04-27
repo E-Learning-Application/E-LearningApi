@@ -10,6 +10,7 @@ namespace CORE.Services.IServices
 {
     public interface ILanguageService
     {
-        Task<ResponseDto<List<GetLanguageDto>>> CreateLanguagesAsync(List<CreateLanguageDto> languages);
+        Task<ResponseDto<List<GetLanguageDto>>> CreateLanguagesAsync(List<CreateLanguageDto> languagesDto);
+        Task<ResponseDto<List<int>>> RemoveLanguagesAsync(HashSet<int> languagesIds);
     }
 }
