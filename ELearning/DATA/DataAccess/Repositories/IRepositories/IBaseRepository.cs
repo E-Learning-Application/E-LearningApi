@@ -20,5 +20,6 @@ namespace DATA.DataAccess.Repositories.IRepositories
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
         Task<bool> CheckAllAsync(Expression<Func<T, bool>> criteria, string[] includes);
         Task<bool> CheckAnyAsync(Expression<Func<T, bool>> criteria, string[] includes);
+        void UpdateRange(IEnumerable<T> entities);
     }
 }

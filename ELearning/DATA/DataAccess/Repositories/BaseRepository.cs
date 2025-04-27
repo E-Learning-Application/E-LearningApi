@@ -148,5 +148,10 @@ namespace DATA.DataAccess.Repositories
         {
             _context.Set<T>().RemoveRange(entities);
         }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().UpdateRange(entities);
+        }
     }
 }
