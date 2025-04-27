@@ -115,6 +115,7 @@ namespace API
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ILanguageService, LanguageService>();
 
             builder.Services.AddMemoryCache();
 
