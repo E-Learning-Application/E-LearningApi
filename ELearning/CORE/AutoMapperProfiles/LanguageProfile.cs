@@ -15,7 +15,8 @@ namespace CORE.AutoMapperProfiles
         public LanguageProfile()
         {
             CreateMap<CreateLanguageDto, Language>();
-            CreateMap<Language, GetLanguageDto>();
+            CreateMap<Language, GetLanguageDto>()
+                .ReverseMap();
         }
     }
 }

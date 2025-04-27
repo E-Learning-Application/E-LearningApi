@@ -68,5 +68,35 @@ namespace CORE.Services
                 };
             }
         }
+
+        public async Task<ResponseDto<List<GetLanguageDto>>> UpdateLanguagesAsync(List<GetLanguageDto> languagesDto)
+        {
+            var ids = languagesDto.Select(l => l.Id).ToHashSet();
+            var languages = (await _unitOfWork.Languages.FindAsync(l => ids.Contains(l.Id), 1, 5000)).ToList();
+            languagesDto = languagesDto.Where(l => languages.Select(r=>r.Id).Contains(l.Id)).ToList();
+
+            for (int i = 0; i < languagesDto.Count; i++)
+            {
+                _mapper.Map(languagesDto[i], languages[i]);
+            }
+
+            var changes = await _unitOfWork.CommitAsync();
+            if (changes == 0)
+                return new ResponseDto<List<GetLanguageDto>>()
+                {
+                    StatusCode = 500,
+                    Message = "Error while updating languages",
+                };
+            else
+            {
+                var updatedLanguages = _mapper.Map<List<GetLanguageDto>>(languages);
+                return new ResponseDto<List<GetLanguageDto>>()
+                {
+                    StatusCode = 200,
+                    Message = "Languages updated successfully",
+                    Data = updatedLanguages
+                };
+            }
+        }
     }
 }
