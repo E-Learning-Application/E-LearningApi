@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CORE.DTOs;
+using CORE.DTOs.Language;
+using Microsoft.EntityFrameworkCore.Update.Internal;
+
+namespace CORE.Services.IServices
+{
+    public interface IUserService
+    {
+        Task<ResponseDto<List<GetLanguageDto>>> UpdateUserLanguagePreferences(HashSet<int> LanguagesIds, int UserId);
+    }
+}
