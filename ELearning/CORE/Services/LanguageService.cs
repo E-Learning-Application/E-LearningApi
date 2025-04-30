@@ -47,6 +47,18 @@ namespace CORE.Services
             }
         }
 
+        public async Task<ResponseDto<List<GetLanguageDto>>> GetAllLanguagesAsync()
+        {
+            var languages = await _unitOfWork.Languages.GetAllAsync(1, 5000);
+            var languagesDto = _mapper.Map<List<GetLanguageDto>>(languages);
+            return new ResponseDto<List<GetLanguageDto>>()
+            {
+                StatusCode = 200,
+                Message = "Languages retrieved successfully",
+                Data = languagesDto
+            };
+        }
+
         public async Task<ResponseDto<List<int>>> RemoveLanguagesAsync(HashSet<int> languagesIds)
         {
             var languages = await _unitOfWork.Languages.FindAsync(l => languagesIds.Contains(l.Id), 1, 5000);
