@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,13 @@ namespace CORE.Helpers
             var roles = rolesClaims?.Select(c => c.Value).ToList();
 
             return roles;
+        }
+        public static string GetErrors(IdentityResult result)
+        {
+            var errors = new StringBuilder();
+            foreach (var error in result.Errors)
+                errors.Append($"{error.Description}, ");
+            return errors.ToString();
         }
     }
 }

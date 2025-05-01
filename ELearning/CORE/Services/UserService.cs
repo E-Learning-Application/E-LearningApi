@@ -8,20 +8,25 @@ using CORE.Constants;
 using CORE.DTOs;
 using CORE.DTOs.Language;
 using CORE.DTOs.User;
+using CORE.Helpers;
 using CORE.Services.IServices;
 using DATA.DataAccess.Repositories.UnitOfWork;
+using DATA.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CORE.Services
 {
     public class UserService : IUserService
     {
+        private readonly UserManager<AppUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public async Task<ResponseDto<object>> DeleteUserAsync(int userId, int authUserId, List<string> roles)
@@ -80,6 +85,34 @@ namespace CORE.Services
                 Data = userDto
             };
 
+        }
+
+        public async Task<ResponseDto<object>> UpdateUserPasswordAsync(UpdatePasswordDto dto, int userId)
+        {
+            var user = await _unitOfWork.AppUsers.GetAsync(userId);
+
+            if (user == null)
+            {
+                return new ResponseDto<object>
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = "User not found"
+                };
+            }
+            var identityResult = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+            if (identityResult.Succeeded == false)
+            {
+                return new ResponseDto<object>
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = UserHelpers.GetErrors(identityResult)
+                };
+            }
+            return new ResponseDto<object>
+            {
+                StatusCode = StatusCodes.OK,
+                Message = "Password updated successfully"
+            };
         }
     }
 }

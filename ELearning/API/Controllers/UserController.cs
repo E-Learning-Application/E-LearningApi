@@ -1,4 +1,5 @@
-﻿using CORE.Helpers;
+﻿using CORE.DTOs.User;
+using CORE.Helpers;
 using CORE.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,14 @@ namespace API.Controllers
             var authUserId = UserHelpers.GetUserId(User);
             var roles = UserHelpers.GetUserRoles(User);
             var result = await _userService.DeleteUserAsync(userId, authUserId, roles);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpPut("password")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserPassword([FromBody] UpdatePasswordDto dto)
+        {
+            var userId = UserHelpers.GetUserId(User);
+            var result = await _userService.UpdateUserPasswordAsync(dto, userId);
             return StatusCode(result.StatusCode, result);
         }
     }
