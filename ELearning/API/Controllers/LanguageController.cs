@@ -32,10 +32,17 @@ namespace API.Controllers
             return StatusCode(result.StatusCode, result);
         }
         [HttpPut("update-languages")]
-        //[Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> UpdateLanguagesAsync([FromBody] List<GetLanguageDto> languages)
         {
             var result = await _languageService.UpdateLanguagesAsync(languages);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpGet("languages")]
+        [Authorize]
+        public async Task<IActionResult> GetAllLanguagesAsync()
+        {
+            var result = await _languageService.GetAllLanguagesAsync();
             return StatusCode(result.StatusCode, result);
         }
     }
