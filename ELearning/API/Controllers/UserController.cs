@@ -41,5 +41,13 @@ namespace API.Controllers
             var result = await _userService.UpdateUserPasswordAsync(dto, userId);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser([FromForm] UpdateUserDto dto)
+        {
+            var userId = UserHelpers.GetUserId(User);
+            var result = await _userService.UpdateUserAsync(dto, userId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

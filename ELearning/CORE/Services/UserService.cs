@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,12 +8,17 @@ using AutoMapper;
 using CORE.Constants;
 using CORE.DTOs;
 using CORE.DTOs.Language;
+using CORE.DTOs.Paths;
 using CORE.DTOs.User;
 using CORE.Helpers;
 using CORE.Services.IServices;
+using DATA.Constants;
 using DATA.DataAccess.Repositories.UnitOfWork;
 using DATA.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using StatusCodes = CORE.Constants.StatusCodes;
 
 namespace CORE.Services
 {
@@ -21,12 +27,16 @@ namespace CORE.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
+        private readonly IOptions<Paths> _paths;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, IFileService fileService, IOptions<Paths> paths)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
+            _fileService = fileService;
+            _paths = paths;
         }
 
         public async Task<ResponseDto<object>> DeleteUserAsync(int userId, int authUserId, List<string> roles)
@@ -85,6 +95,47 @@ namespace CORE.Services
                 Data = userDto
             };
 
+        }
+
+        public async Task<ResponseDto<GetUserDto>> UpdateUserAsync(UpdateUserDto dto, int userId)
+        {
+            var user = await _unitOfWork.AppUsers.GetAsync(userId);
+            if (user == null)
+            {
+                return new ResponseDto<GetUserDto>
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = "User not found"
+                };
+            }
+            user.Bio = dto.Bio;
+            user.UserName = dto.Username;
+
+            if (dto.Image != null)
+            {
+                user.ImagePath = await _fileService.UploadFileAsync(_paths.Value?.UserImages, user.ImagePath, dto.Image, AllowedExtensions.ImageExtensions);
+                if (user.ImagePath == null)
+                    return new ResponseDto<GetUserDto>
+                    {
+                        StatusCode = StatusCodes.InternalServerError,
+                        Message = "Failed to upload main image"
+                    };
+            }
+            var changes = await _unitOfWork.CommitAsync();
+            if (changes == 0)
+            {
+                return new ResponseDto<GetUserDto>
+                {
+                    StatusCode = StatusCodes.InternalServerError,
+                    Message = "Error updating user"
+                };
+            }
+            return new ResponseDto<GetUserDto>
+            {
+                StatusCode = StatusCodes.OK,
+                Message = "User updated successfully",
+                Data = _mapper.Map<GetUserDto>(user)
+            };
         }
 
         public async Task<ResponseDto<object>> UpdateUserPasswordAsync(UpdatePasswordDto dto, int userId)
