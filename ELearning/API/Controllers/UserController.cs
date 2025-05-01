@@ -16,5 +16,12 @@ namespace API.Controllers
         {
             _userService = userService;
         }
+        [HttpGet("{userId}")]
+        [Authorize]
+        public async Task<IActionResult> GetUser(int userId)
+        {
+            var result = await _userService.GetUserAsync(userId);
+            return StatusCode(result.StatusCode, result);   
+        }
     }
 }

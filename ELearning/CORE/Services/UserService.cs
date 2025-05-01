@@ -7,6 +7,7 @@ using AutoMapper;
 using CORE.Constants;
 using CORE.DTOs;
 using CORE.DTOs.Language;
+using CORE.DTOs.User;
 using CORE.Services.IServices;
 using DATA.DataAccess.Repositories.UnitOfWork;
 
@@ -21,6 +22,28 @@ namespace CORE.Services
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public async Task<ResponseDto<GetUserDto>> GetUserAsync(int userId)
+        {
+            var user = await _unitOfWork.AppUsers.GetAsync(userId);
+            if (user == null)
+            {
+                return new ResponseDto<GetUserDto>
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = "User not found"
+                };
+            }
+            var userDto = _mapper.Map<GetUserDto>(user);
+            var languagePreferences = await _unitOfWork.LanguagePreferences.GetAllAsync(x => x.UserId == userId, new string[] {"Language"});
+            userDto.LanguagePreferences = _mapper.Map<List<GetLanguagePreferenceDto>>(languagePreferences);
+            return new ResponseDto<GetUserDto>
+            {
+                StatusCode = StatusCodes.OK,
+                Data = userDto
+            };
+
         }
     }
 }
