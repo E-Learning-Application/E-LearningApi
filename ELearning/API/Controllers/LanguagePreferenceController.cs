@@ -22,9 +22,17 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateUserLanguagePreferences([FromBody] List<CreateLanguagePreferenceDto> dtos)
         {
             int userid = UserHelpers.GetUserId(User);
-            var result = await _languagePreferenceService.UpdateUserLanguagePreferences(dtos, userid);
+            var result = await _languagePreferenceService.UpdateUserLanguagePreferencesAsync(dtos, userid);
 
             return StatusCode(result.StatusCode, result);   
+        }
+        [HttpGet("user-language-preferences")]
+        [Authorize]
+        public async Task<IActionResult> GetUserLanguagePreferences(int userId)
+        {
+            var result = await _languagePreferenceService.GetUserLanguagePreferenceAsync(userId);
+
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

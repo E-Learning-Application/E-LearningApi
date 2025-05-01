@@ -10,6 +10,7 @@ namespace CORE.Services.IServices
 {
     public interface ILanguagePreferenceService
     {
-        Task<ResponseDto<List<GetLanguagePreferenceDto>>> UpdateUserLanguagePreferences(List<CreateLanguagePreferenceDto> dtos, int UserId);
+        Task<ResponseDto<List<GetLanguagePreferenceDto>>> UpdateUserLanguagePreferencesAsync(List<CreateLanguagePreferenceDto> dtos, int UserId);
+        Task<ResponseDto<List<GetLanguagePreferenceDto>>> GetUserLanguagePreferenceAsync(int userId);
     }
 }

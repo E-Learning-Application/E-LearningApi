@@ -24,7 +24,26 @@ namespace CORE.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto<List<GetLanguagePreferenceDto>>> UpdateUserLanguagePreferences(List<CreateLanguagePreferenceDto> dtos, int UserId)
+        public async Task<ResponseDto<List<GetLanguagePreferenceDto>>> GetUserLanguagePreferenceAsync(int userId)
+        {
+            var user = await _unitOfWork.AppUsers.GetAsync(userId);
+            if (user == null)
+                return new ResponseDto<List<GetLanguagePreferenceDto>>()
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = "User not found"
+                };
+
+            var languagePrefreneces = await _unitOfWork.LanguagePreferences.GetAllAsync(x => x.UserId == userId, new string[] { "Language" });
+            return new ResponseDto<List<GetLanguagePreferenceDto>>()
+            {
+                StatusCode = 200,
+                Message = "User languages fetched successfully",
+                Data = _mapper.Map<List<GetLanguagePreferenceDto>>(languagePrefreneces)
+            };
+        }
+
+        public async Task<ResponseDto<List<GetLanguagePreferenceDto>>> UpdateUserLanguagePreferencesAsync(List<CreateLanguagePreferenceDto> dtos, int UserId)
         {
             var languagesIds = dtos.Select(x => x.LanguageId).ToHashSet();
             var languages = await _unitOfWork.Languages.GetAllAsync(x => languagesIds.Contains(x.Id));
