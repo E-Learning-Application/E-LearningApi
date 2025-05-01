@@ -23,5 +23,14 @@ namespace API.Controllers
             var result = await _userService.GetUserAsync(userId);
             return StatusCode(result.StatusCode, result);   
         }
+        [HttpDelete("{userId}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            var authUserId = UserHelpers.GetUserId(User);
+            var roles = UserHelpers.GetUserRoles(User);
+            var result = await _userService.DeleteUserAsync(userId, authUserId, roles);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

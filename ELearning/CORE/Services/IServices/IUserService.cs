@@ -13,5 +13,6 @@ namespace CORE.Services.IServices
     public interface IUserService
     {
         Task<ResponseDto<GetUserDto>> GetUserAsync(int userId);
+        Task<ResponseDto<object>> DeleteUserAsync(int userId, int authUserId, List<string> roles);
     }
 }
