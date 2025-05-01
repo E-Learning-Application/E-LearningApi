@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CORE.DTOs.Auth;
+using CORE.DTOs.User;
 using DATA.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ namespace CORE.AutoMapperProfiles
                 .ForMember(dest=> dest.ConfirmPassword, opt=>opt.Ignore())
                 .ForMember(dest=> dest.Password, opt=>opt.Ignore())
                 .ReverseMap();
+
+            CreateMap<AppUser, GetUserDto>()
+                .ForMember(dest => dest.LanguagePreferences, opt => opt.Ignore());
         }
     }
 }

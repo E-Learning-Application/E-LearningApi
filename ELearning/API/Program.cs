@@ -19,6 +19,7 @@ using System.Text.Json.Serialization;
 using DATA.DataAccess.Repositories.UnitOfWork;
 using CORE.Services.IServices;
 using CORE.Services;
+using CORE.DTOs.Paths;
 
 namespace API
 {
@@ -109,6 +110,7 @@ namespace API
             builder.Services.AddAuthorization();
 
             builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JWT"));
+            builder.Services.Configure<Paths>(builder.Configuration.GetSection("Paths"));
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -118,6 +120,7 @@ namespace API
             builder.Services.AddScoped<ILanguageService, LanguageService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ILanguagePreferenceService, LanguagePreferenceService>();
+            builder.Services.AddScoped<IFileService, FileService>();
 
             builder.Services.AddMemoryCache();
 
