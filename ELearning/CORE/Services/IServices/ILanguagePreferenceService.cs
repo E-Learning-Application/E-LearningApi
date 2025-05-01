@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CORE.DTOs;
 using CORE.DTOs.Language;
-using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace CORE.Services.IServices
 {
-    public interface IUserService
+    public interface ILanguagePreferenceService
     {
+        Task<ResponseDto<List<GetLanguagePreferenceDto>>> UpdateUserLanguagePreferences(List<CreateLanguagePreferenceDto> dtos, int UserId);
     }
 }

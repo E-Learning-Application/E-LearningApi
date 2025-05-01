@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DATA.Models.Enums;
 
 namespace DATA.Models
 {
@@ -12,5 +13,7 @@ namespace DATA.Models
         public AppUser AppUser { get; set; }
         public int LanguageId { get; set; }
         public Language Language { get; set; }
+        public LanguageProficiencyLevel ProficiencyLevel { get; set; }
+        public bool IsLearning { get; set; }
     }
 }

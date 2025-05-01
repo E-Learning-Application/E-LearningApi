@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DataAccess\Migrations\" />
-    <Folder Include="Models\Enums\" />
   </ItemGroup>
 
   <ItemGroup>

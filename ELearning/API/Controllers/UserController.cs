@@ -16,15 +16,5 @@ namespace API.Controllers
         {
             _userService = userService;
         }
-        [HttpPut("user-language-preferences")]
-        [Authorize]
-        public async Task<IActionResult> UpdateUserLanguagePreferences([FromBody] HashSet<int> LanguagesIds)
-        {
-            var userId = UserHelpers.GetUserId(User);
-
-            var result = await _userService.UpdateUserLanguagePreferences(LanguagesIds, userId);
-
-            return StatusCode(result.StatusCode, result);
-        }
     }
 }
