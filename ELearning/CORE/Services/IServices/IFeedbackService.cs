@@ -11,5 +11,6 @@ namespace CORE.Services.IServices
     public interface IFeedbackService
     {
         Task<ResponseDto<GetFeedbackDto>> CreateFeedbackAsync(CreateFeedbackDto feedbackDto, int feedbackerId);
+        Task<ResponseDto<List<GetFeedbackDto>>> GetAllFeedbacksAsync(int feedbackerId);
     }
 }

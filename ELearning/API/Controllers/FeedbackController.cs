@@ -27,5 +27,12 @@ namespace API.Controllers
             var result = await _feedbackService.CreateFeedbackAsync(feedbackDto, userId);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpGet("all")]
+        [Authorize]
+        public async Task<IActionResult> GetAllFeedbacksAsync(int userId)
+        {
+            var result = await _feedbackService.GetAllFeedbacksAsync(userId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

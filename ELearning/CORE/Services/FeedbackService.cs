@@ -54,5 +54,17 @@ namespace CORE.Services
                 Data = _mapper.Map<GetFeedbackDto>(feedback)
             };
         }
+
+        public async Task<ResponseDto<List<GetFeedbackDto>>> GetAllFeedbacksAsync(int feedbackerId)
+        {
+            var feedbacks = await _unitOfWork.Feedbacks.GetAllAsync(f => f.UserId == feedbackerId);
+            var feedbackDtos = _mapper.Map<List<GetFeedbackDto>>(feedbacks);
+            return new ResponseDto<List<GetFeedbackDto>>
+            {
+                StatusCode = StatusCodes.OK,
+                Message = "Feedbacks retrieved successfully.",
+                Data = feedbackDtos
+            };
+        }
     }
 }
