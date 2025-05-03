@@ -21,6 +21,8 @@ namespace CORE.AutoMapperProfiles
 
             CreateMap<AppUser, GetUserDto>()
                 .ForMember(dest => dest.LanguagePreferences, opt => opt.Ignore());
+            
+            CreateMap<AppUser, GetUserSummeryDto>();
         }
     }
 }
