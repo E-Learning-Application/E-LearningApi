@@ -22,12 +22,15 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
 
         public IBaseRepository<LanguagePreference> LanguagePreferences { get; private set; }
 
+        public IBaseRepository<Report> Reports { get; private set; }
+
         public UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logger)
         {
             _context = context;
             AppUsers = new BaseRepository<AppUser>(_context);
             Languages = new BaseRepository<Language>(_context);
             LanguagePreferences = new BaseRepository<LanguagePreference>(_context);
+            Reports = new BaseRepository<Report>(_context);
         }
 
         public async Task<int> CommitAsync()
