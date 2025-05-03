@@ -16,5 +16,6 @@ namespace CORE.Services.IServices
         Task<ResponseDto<object>> DeleteUserAsync(int userId, int authUserId, List<string> roles);
         Task<ResponseDto<object>> UpdateUserPasswordAsync(UpdatePasswordDto dto, int userId);
         Task<ResponseDto<GetUserDto>> UpdateUserAsync(UpdateUserDto dto, int userId);
+        Task<ResponseDto<IEnumerable<GetUserSummeryDto>>> GetAllUsersAsync(int pageNo, int pageSize);
     }
 }

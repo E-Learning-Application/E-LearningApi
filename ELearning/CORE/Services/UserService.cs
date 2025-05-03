@@ -75,6 +75,23 @@ namespace CORE.Services
             };
         }
 
+        public async Task<ResponseDto<IEnumerable<GetUserSummeryDto>>> GetAllUsersAsync(int pageNo, int pageSize)
+        {
+            if(PaginationHelpers.ValidatePaging(pageNo, pageSize, 100) is string paginationError)
+                return new ResponseDto<IEnumerable<GetUserSummeryDto>>
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = paginationError
+                };
+
+            var users = await _unitOfWork.AppUsers.GetAllAsync(pageNo, pageSize);
+            return new ResponseDto<IEnumerable<GetUserSummeryDto>>
+            {
+                StatusCode = StatusCodes.OK,
+                Data = _mapper.Map<IEnumerable<GetUserSummeryDto>>(users)
+            };
+        }
+
         public async Task<ResponseDto<GetUserDto>> GetUserAsync(int userId)
         {
             var user = await _unitOfWork.AppUsers.GetAsync(userId);

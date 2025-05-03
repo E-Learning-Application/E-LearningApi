@@ -49,5 +49,12 @@ namespace API.Controllers
             var result = await _userService.UpdateUserAsync(dto, userId);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpGet("all")]
+        //[Authorize]
+        public async Task<IActionResult> GetAllUsersAsync(int pageNo, int pageSize)
+        {
+            var result = await _userService.GetAllUsersAsync(pageNo, pageSize);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
