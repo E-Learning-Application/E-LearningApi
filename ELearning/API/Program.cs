@@ -122,6 +122,7 @@ namespace API
             builder.Services.AddScoped<ILanguagePreferenceService, LanguagePreferenceService>();
             builder.Services.AddScoped<IFileService, FileService>();
             builder.Services.AddScoped<IReportService, ReportService>();
+            builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 
             builder.Services.AddMemoryCache();
 

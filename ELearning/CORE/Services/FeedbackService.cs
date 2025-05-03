@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
+using CORE.Constants;
+using CORE.DTOs;
+using CORE.DTOs.Feedback;
+using CORE.Services.IServices;
+using DATA.DataAccess.Repositories.UnitOfWork;
+using DATA.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace CORE.Services
+{
+    public class FeedbackService : IFeedbackService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public FeedbackService(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task<ResponseDto<GetFeedbackDto>> CreateFeedbackAsync(CreateFeedbackDto feedbackDto, int feedbackerId)
+        {
+            if(feedbackDto.Rating < 1 || feedbackDto.Rating > 5)
+                return new ResponseDto<GetFeedbackDto>
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = "Rating must be between 1 and 5."
+                };
+
+            var feedback = _mapper.Map<Feedback>(feedbackDto);
+
+            feedback.UserId = feedbackerId;
+
+            await _unitOfWork.Feedbacks.AddOrUpdateAsync(feedback);
+            var changes = await _unitOfWork.CommitAsync();
+
+            if(changes == 0)
+                return new ResponseDto<GetFeedbackDto>
+                {
+                    StatusCode = StatusCodes.InternalServerError,
+                    Message = "An error occurred while creating feedback."
+                };
+            return new ResponseDto<GetFeedbackDto>
+            {
+                StatusCode = StatusCodes.Created,
+                Message = "Feedback created successfully.",
+                Data = _mapper.Map<GetFeedbackDto>(feedback)
+            };
+        }
+    }
+}

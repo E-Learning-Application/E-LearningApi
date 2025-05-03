@@ -24,6 +24,8 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
 
         public IBaseRepository<Report> Reports { get; private set; }
 
+        public IBaseRepository<Feedback> Feedbacks { get; private set; }
+
         public UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logger)
         {
             _context = context;
@@ -31,6 +33,7 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
             Languages = new BaseRepository<Language>(_context);
             LanguagePreferences = new BaseRepository<LanguagePreference>(_context);
             Reports = new BaseRepository<Report>(_context);
+            Feedbacks = new BaseRepository<Feedback>(_context);
         }
 
         public async Task<int> CommitAsync()
