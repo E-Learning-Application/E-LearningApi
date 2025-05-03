@@ -12,5 +12,6 @@ namespace CORE.Services.IServices
     {
         Task<ResponseDto<GetFeedbackDto>> CreateFeedbackAsync(CreateFeedbackDto feedbackDto, int feedbackerId);
         Task<ResponseDto<List<GetFeedbackDto>>> GetAllFeedbacksAsync(int feedbackerId);
+        Task<ResponseDto<object>> DeleteFeedbadckAsync(int feedbackId, int userId);
     }
 }
