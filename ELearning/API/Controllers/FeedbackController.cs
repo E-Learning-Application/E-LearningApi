@@ -42,5 +42,13 @@ namespace API.Controllers
             var result = await _feedbackService.DeleteFeedbadckAsync(feedbackId, userId);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateFeedbackAsync([FromBody] UpdateFeedbackDto dto)
+        {
+            var userId = UserHelpers.GetUserId(User);
+            var result = await _feedbackService.UpdateFeedbackAsync(dto, userId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
