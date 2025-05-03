@@ -27,5 +27,28 @@ namespace API.Controllers
             var result = await _feedbackService.CreateFeedbackAsync(feedbackDto, userId);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpGet("all")]
+        [Authorize]
+        public async Task<IActionResult> GetAllFeedbacksAsync(int userId)
+        {
+            var result = await _feedbackService.GetAllFeedbacksAsync(userId);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteFeedbackAsync(int feedbackId)
+        {
+            var userId = UserHelpers.GetUserId(User);
+            var result = await _feedbackService.DeleteFeedbadckAsync(feedbackId, userId);
+            return StatusCode(result.StatusCode, result);
+        }
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateFeedbackAsync([FromBody] UpdateFeedbackDto dto)
+        {
+            var userId = UserHelpers.GetUserId(User);
+            var result = await _feedbackService.UpdateFeedbackAsync(dto, userId);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }
