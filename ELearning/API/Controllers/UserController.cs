@@ -50,7 +50,7 @@ namespace API.Controllers
             return StatusCode(result.StatusCode, result);
         }
         [HttpGet("all")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetAllUsersAsync(int pageNo, int pageSize)
         {
             var result = await _userService.GetAllUsersAsync(pageNo, pageSize);
