@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DATA.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250424162440_createdTheDatabase")]
-    partial class createdTheDatabase
+    [Migration("20250630045116_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,6 +159,12 @@ namespace DATA.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLearning")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProficiencyLevel")
                         .HasColumnType("int");
 
                     b.HasKey("UserId", "LanguageId");
@@ -329,6 +335,43 @@ namespace DATA.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("DATA.Models.AppUser", b =>
+                {
+                    b.OwnsMany("DATA.Models.RefreshToken", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<int>("AppUserId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("CreatedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("RevokedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("AppUserId", "Id");
+
+                            b1.ToTable("RefreshToken");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AppUserId");
+                        });
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("DATA.Models.Feedback", b =>

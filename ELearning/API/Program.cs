@@ -31,7 +31,7 @@ namespace API
 
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             builder.Configuration.AddEnvironmentVariables();
-        
+
             // Add services to the container.
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
@@ -128,7 +128,7 @@ namespace API
             builder.Services.AddMemoryCache();
 
             var app = builder.Build();
-            
+
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -138,7 +138,7 @@ namespace API
 
             app.MapOpenApi();
 
-            app.UseSwagger();
+            app.UseSwagger();   
             app.UseSwaggerUI();
 
             app.Use(async (context, next) =>

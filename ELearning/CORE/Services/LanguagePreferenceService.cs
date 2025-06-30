@@ -45,6 +45,18 @@ namespace CORE.Services
 
         public async Task<ResponseDto<List<GetLanguagePreferenceDto>>> UpdateUserLanguagePreferencesAsync(List<CreateLanguagePreferenceDto> dtos, int UserId)
         {
+            var userLanguages = await _unitOfWork.LanguagePreferences.GetAllAsync(x => x.UserId == UserId);
+            if (dtos == null || dtos.Count == 0)
+            {
+                _unitOfWork.LanguagePreferences.Delete(userLanguages);
+                await _unitOfWork.CommitAsync();
+                return new ResponseDto<List<GetLanguagePreferenceDto>>()
+                {
+                    StatusCode = 200,
+                    Message = "User languages updated successfully",
+                    Data = new List<GetLanguagePreferenceDto>()
+                };
+            }
             var languagesIds = dtos.Select(x => x.LanguageId).ToHashSet();
             var languages = await _unitOfWork.Languages.GetAllAsync(x => languagesIds.Contains(x.Id));
             if (languages.Count() != languagesIds.Count())
@@ -61,7 +73,6 @@ namespace CORE.Services
             {
                 item.UserId = UserId;
             }
-            var userLanguages = await _unitOfWork.LanguagePreferences.GetAllAsync(x => x.UserId == UserId);
             _unitOfWork.LanguagePreferences.Delete(userLanguages);
             await _unitOfWork.CommitAsync();
  

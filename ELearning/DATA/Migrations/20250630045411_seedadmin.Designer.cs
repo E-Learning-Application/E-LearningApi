@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DATA.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250424172010_roles")]
-    partial class roles
+    [Migration("20250630045411_seedadmin")]
+    partial class seedadmin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,6 +159,12 @@ namespace DATA.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLearning")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProficiencyLevel")
                         .HasColumnType("int");
 
                     b.HasKey("UserId", "LanguageId");

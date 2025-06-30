@@ -126,7 +126,7 @@ namespace DATA.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("DATA.Models.Language", b =>
@@ -147,7 +147,7 @@ namespace DATA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages", (string)null);
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("DATA.Models.LanguagePreference", b =>
@@ -168,7 +168,7 @@ namespace DATA.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("LanguagePreferences", (string)null);
+                    b.ToTable("LanguagePreferences");
                 });
 
             modelBuilder.Entity("DATA.Models.Report", b =>
@@ -198,7 +198,7 @@ namespace DATA.Migrations
 
                     b.HasIndex("ReporterId");
 
-                    b.ToTable("Reports", (string)null);
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -362,7 +362,7 @@ namespace DATA.Migrations
 
                             b1.HasKey("AppUserId", "Id");
 
-                            b1.ToTable("RefreshToken", (string)null);
+                            b1.ToTable("RefreshToken");
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
