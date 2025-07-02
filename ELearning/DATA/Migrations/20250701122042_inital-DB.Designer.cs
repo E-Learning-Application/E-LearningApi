@@ -4,6 +4,7 @@ using DATA.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DATA.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250701122042_inital-DB")]
+    partial class initalDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,46 +172,6 @@ namespace DATA.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("LanguagePreferences");
-                });
-
-            modelBuilder.Entity("DATA.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<bool>("IsDeletedByReceiver")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeletedBySender")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ReceiverID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverID");
-
-                    b.HasIndex("SenderID");
-
-                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("DATA.Models.Report", b =>
@@ -441,25 +404,6 @@ namespace DATA.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("DATA.Models.Message", b =>
-                {
-                    b.HasOne("DATA.Models.AppUser", "Receiver")
-                        .WithMany("MessagesReceived")
-                        .HasForeignKey("ReceiverID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DATA.Models.AppUser", "Sender")
-                        .WithMany("MessagesSent")
-                        .HasForeignKey("SenderID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("DATA.Models.Report", b =>
                 {
                     b.HasOne("DATA.Models.AppUser", "Reported")
@@ -533,10 +477,6 @@ namespace DATA.Migrations
             modelBuilder.Entity("DATA.Models.AppUser", b =>
                 {
                     b.Navigation("Feedbacks");
-
-                    b.Navigation("MessagesReceived");
-
-                    b.Navigation("MessagesSent");
 
                     b.Navigation("ReportsMade");
 

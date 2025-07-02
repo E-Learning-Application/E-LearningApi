@@ -15,5 +15,7 @@ namespace DATA.Models
         public string? Comment { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         //the feedback is given on the call, so i should wait for zahran's to develop the call model and then i add the call id here
+        //zahran took so long i think we are cooked
+        //zahran:now i can rest in peace...... or not
     }
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API</name>
+    </assembly>
+    <members>
+        <member name="T:API.Controllers.MessagesController">
+            <summary>
+            Handles operations related to messages, such as sending, retrieving, deleting, and marking messages as read.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetCurrentUserId">
+            <summary>
+            Gets the current authenticated user's ID from the JWT claims.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetAll">
+            <summary>
+            Retrieves all messages for the currently authenticated user.
+            </summary>
+            <returns>A list of all messages sent or received by the user.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetChatList">
+            <summary>
+            Retrieves a list of recent chat summaries for the currently authenticated user.
+            </summary>
+            <remarks>
+            This endpoint returns a list of users the current user has chatted with, including:
+            - The other user's ID and name
+            - Profile image
+            - The last message exchanged
+            - Timestamp of the last message
+            - Count of unread messages from each user
+            
+            The chat summaries are sorted by the most recent message timestamp.
+            </remarks>
+            <returns>
+            A list of <see cref="T:CORE.DTOs.Message.ChatSummaryResponse"/> objects representing the recent chats.
+            </returns>
+            <response code="200">Returns the list of recent chats</response>
+            <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetChatWith(System.Int32)">
+            <summary>
+            Retrieves the chat messages exchanged between the current user and another specific user.
+            </summary>
+            <param name="withUser">The ID of the other user to fetch chat with.</param>
+            <returns>A list of messages exchanged with the specified user.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetById(System.Int32)">
+            <summary>
+            Retrieves a specific message by its ID.
+            </summary>
+            <param name="id">The ID of the message to retrieve.</param>
+            <returns>The message if found.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetUnreadCount">
+            <summary>
+            Gets the count of unread messages for the current user.
+            </summary>
+            <returns>The number of unread messages.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetLastMessageWith(System.Int32)">
+            <summary>
+            Retrieves the last message exchanged between the current user and another specific user.
+            </summary>
+            <param name="withUser">The ID of the other user.</param>
+            <returns>The most recent message exchanged.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.MarkAsRead(System.Int32)">
+            <summary>
+            Marks a message as read.
+            </summary>
+            <param name="id">The ID of the message to mark as read.</param>
+            <returns>No content if successful, or bad request if failed.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.Delete(System.Int32)">
+            <summary>
+            Deletes a message for the current user (soft delete).
+            </summary>
+            <param name="id">The ID of the message to delete.</param>
+            <returns>No content if successful, or bad request if failed.</returns>
+        </member>
+    </members>
+</doc>

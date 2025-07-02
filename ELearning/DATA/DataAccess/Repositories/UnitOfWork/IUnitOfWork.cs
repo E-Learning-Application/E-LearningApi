@@ -15,6 +15,7 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
         IBaseRepository<LanguagePreference> LanguagePreferences { get; }
         IBaseRepository<Report> Reports { get; }
         IBaseRepository<Feedback> Feedbacks { get; }
+        IBaseRepository<Message> Messages { get; }
 
         Task<int> CommitAsync();
 

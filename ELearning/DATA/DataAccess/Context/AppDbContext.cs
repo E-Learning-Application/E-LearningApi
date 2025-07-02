@@ -12,6 +12,7 @@ namespace DATA.DataAccess.Context
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<LanguagePreference> LanguagePreferences { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Message> Messages {  get; set; }
         public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
