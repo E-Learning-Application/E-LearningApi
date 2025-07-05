@@ -26,7 +26,7 @@ namespace API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            builder.Configuration.AddEnvironmentVariables();
+            //builder.Configuration.AddEnvironmentVariables();
 
             // Add services to the container.
             builder.Services.AddControllers()
@@ -133,11 +133,11 @@ namespace API
             });
             var app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                dbContext.Database.Migrate();
-            }
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            //    dbContext.Database.Migrate();
+            //}
 
 
             app.MapOpenApi();
