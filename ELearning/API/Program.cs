@@ -1,25 +1,21 @@
 using CORE.DTOs.Auth;
+using CORE.DTOs.Paths;
+using CORE.Hubs;
+using CORE.Services;
+using CORE.Services.IServices;
 using DATA.DataAccess.Context;
 using DATA.DataAccess.Context.Interceptors;
-using DATA.DataAccess.Repositories.IRepositories;
 using DATA.DataAccess.Repositories;
+using DATA.DataAccess.Repositories.IRepositories;
+using DATA.DataAccess.Repositories.UnitOfWork;
 using DATA.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using DATA.DataAccess.Repositories.UnitOfWork;
-using CORE.Services.IServices;
-using CORE.Services;
-using CORE.DTOs.Paths;
 
 namespace API
 {
@@ -61,7 +57,6 @@ namespace API
             // Configure Swagger to use JWT Bearer token
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ELearningAPI", Version = "v1" });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -114,7 +109,7 @@ namespace API
             builder.Services.Configure<Paths>(builder.Configuration.GetSection("Paths"));
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            builder.Services.AddSignalR();
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
@@ -124,9 +119,18 @@ namespace API
             builder.Services.AddScoped<IFileService, FileService>();
             builder.Services.AddScoped<IReportService, ReportService>();
             builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<IInterestService, InterestService>();
+            builder.Services.AddScoped<IMatchingService, MatchingService>();
+
 
             builder.Services.AddMemoryCache();
-
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ELearningAPI", Version = "v1" });
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "api.xml"));
+            });
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -156,6 +160,8 @@ namespace API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapHub<ChatHub>("/chatHub");
 
 
             app.MapControllers();

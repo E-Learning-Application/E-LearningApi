@@ -6,23 +6,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using CORE.Constants;
 using CORE.DTOs;
 using DATA.DataAccess.Repositories.UnitOfWork;
-using CORE.Helpers;
 using Microsoft.Extensions.Caching.Memory;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.EntityFrameworkCore;
-using DATA.Constants;
-using Microsoft.Extensions.Logging;
 
 namespace CORE.Services
 {

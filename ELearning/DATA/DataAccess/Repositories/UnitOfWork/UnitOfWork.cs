@@ -3,11 +3,6 @@ using DATA.DataAccess.Repositories.IRepositories;
 using DATA.Models;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DATA.DataAccess.Repositories.UnitOfWork
 {
@@ -25,6 +20,10 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
         public IBaseRepository<Report> Reports { get; private set; }
 
         public IBaseRepository<Feedback> Feedbacks { get; private set; }
+        public IBaseRepository<Message> Messages { get; private set; }
+        public IBaseRepository<Interest> Interests { get; private set; }
+        public IBaseRepository<UserInterest> UserInterests { get; private set; }
+        public IBaseRepository<UserMatch> UserMatches { get; private set; }
 
         public UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logger)
         {
@@ -34,6 +33,10 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
             LanguagePreferences = new BaseRepository<LanguagePreference>(_context);
             Reports = new BaseRepository<Report>(_context);
             Feedbacks = new BaseRepository<Feedback>(_context);
+            Messages = new BaseRepository<Message>(_context);
+            Interests = new BaseRepository<Interest>(_context);
+            UserInterests = new BaseRepository<UserInterest>(_context);
+            UserMatches = new BaseRepository<UserMatch>(_context);
         }
 
         public async Task<int> CommitAsync()

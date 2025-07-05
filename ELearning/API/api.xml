@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API</name>
+    </assembly>
+    <members>
+        <member name="T:API.Controllers.InterestsController">
+            <summary>
+            Handles operations related to interests, such as adding interests and managing user interests.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.InterestsController.GetCurrentUserId">
+            <summary>
+            Gets the current authenticated user's ID from the JWT claims.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.InterestsController.AddInterest(CORE.DTOs.Interest.InterestAddRequest)">
+            <summary>
+            Adds a new interest to the system.
+            </summary>
+            <remarks>
+            Creates a new interest if it doesn't already exist (based on name).
+            </remarks>
+            <param name="request">The interest details to add.</param>
+            <returns>The created or existing interest.</returns>
+        </member>
+        <member name="M:API.Controllers.InterestsController.AddUserInterest(CORE.DTOs.Interest.UserInterestAddRequest)">
+            <summary>
+            Assigns an interest to the current user.
+            </summary>
+            <remarks>
+            Links the specified interest to the authenticated user if not already linked.
+            </remarks>
+            <param name="request">The user interest details, including user ID and interest ID.</param>
+            <returns>The created user interest.</returns>
+            <response code="200">Returns the user interest details</response>
+            <response code="401">If the user is not authorized to add interests for themselves</response>
+            <response code="404">If the user or interest is not found</response>
+        </member>
+        <member name="M:API.Controllers.InterestsController.GetUserInterests">
+            <summary>
+            Retrieves all interests associated with the current user.
+            </summary>
+            <remarks>
+            Returns a list of interests the authenticated user has selected.
+            </remarks>
+            <returns>A list of user interests.</returns>
+            <response code="200">Returns the list of interests</response>
+            <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="T:API.Controllers.MatchingController">
+            <summary>
+            Handles operations related to user matching, such as finding, retrieving, and ending matches
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MatchingController.GetCurrentUserId">
+            <summary>
+            Gets the current authenticated user's ID from the JWT claims.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MatchingController.FindMatch(CORE.DTOs.UserMatch.UserMatchRequest)">
+            <summary>
+            Initiates a match request for the current user based on the specified match type.
+            </summary>
+            <remarks>
+            Finds a compatible user based on language preferences, shared interests, and online status.
+            Match types can be "text", "voice", or "video".
+            </remarks>
+            <param name="request">The match request containing the user ID and match type.</param>
+            <returns>The created match details.</returns>
+            <response code="200">Returns the match details</response>
+            <response code="401">If the user is not authenticated or requests a match for another user</response>
+            <response code="404">If no suitable match is found</response>
+        </member>
+        <member name="M:API.Controllers.MatchingController.GetMatches">
+            <summary>
+            Retrieves all active matches for the current user.
+            </summary>
+            <remarks>
+            Returns a list of active matches, including details of the matched users and match type.
+            </remarks>
+            <returns>A list of active matches.</returns>
+            <response code="200">Returns the list of matches</response>
+        </member>
+        <member name="M:API.Controllers.MatchingController.EndMatch(System.Int32)">
+            <summary>
+            Ends an active match by its ID.
+            </summary>
+            <remarks>
+            Only the user involved in the match can end it. Sets the match's IsActive to false.
+            </remarks>
+            <param name="matchId">The ID of the match to end.</param>
+            <returns>No content if successful, or bad request if failed.</returns>
+            <response code="204">If the match was successfully ended</response>
+            <response code="401">If the user is not authorized to end the match</response>
+            <response code="404">If the match is not found</response>
+        </member>
+        <member name="T:API.Controllers.MessagesController">
+            <summary>
+            Handles operations related to messages, such as sending, retrieving, deleting, and marking messages as read.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetCurrentUserId">
+            <summary>
+            Gets the current authenticated user's ID from the JWT claims.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetAll">
+            <summary>
+            Retrieves all messages for the currently authenticated user.
+            </summary>
+            <returns>A list of all messages sent or received by the user.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetChatList">
+            <summary>
+            Retrieves a list of recent chat summaries for the currently authenticated user.
+            </summary>
+            <remarks>
+            This endpoint returns a list of users the current user has chatted with, including:
+            - The other user's ID and name
+            - Profile image
+            - The last message exchanged
+            - Timestamp of the last message
+            - Count of unread messages from each user
+            
+            The chat summaries are sorted by the most recent message timestamp.
+            </remarks>
+            <returns>
+            A list of <see cref="T:CORE.DTOs.Message.ChatSummaryResponse"/> objects representing the recent chats.
+            </returns>
+            <response code="200">Returns the list of recent chats</response>
+            <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetChatWith(System.Int32)">
+            <summary>
+            Retrieves the chat messages exchanged between the current user and another specific user.
+            </summary>
+            <param name="withUser">The ID of the other user to fetch chat with.</param>
+            <returns>A list of messages exchanged with the specified user.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetById(System.Int32)">
+            <summary>
+            Retrieves a specific message by its ID.
+            </summary>
+            <param name="id">The ID of the message to retrieve.</param>
+            <returns>The message if found.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetUnreadCount">
+            <summary>
+            Gets the count of unread messages for the current user.
+            </summary>
+            <returns>The number of unread messages.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.GetLastMessageWith(System.Int32)">
+            <summary>
+            Retrieves the last message exchanged between the current user and another specific user.
+            </summary>
+            <param name="withUser">The ID of the other user.</param>
+            <returns>The most recent message exchanged.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.MarkAsRead(System.Int32)">
+            <summary>
+            Marks a message as read.
+            </summary>
+            <param name="id">The ID of the message to mark as read.</param>
+            <returns>No content if successful, or bad request if failed.</returns>
+        </member>
+        <member name="M:API.Controllers.MessagesController.Delete(System.Int32)">
+            <summary>
+            Deletes a message for the current user (soft delete).
+            </summary>
+            <param name="id">The ID of the message to delete.</param>
+            <returns>No content if successful, or bad request if failed.</returns>
+        </member>
+    </members>
+</doc>
