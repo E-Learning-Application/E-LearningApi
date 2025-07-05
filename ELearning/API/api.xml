@@ -4,6 +4,97 @@
         <name>API</name>
     </assembly>
     <members>
+        <member name="T:API.Controllers.InterestsController">
+            <summary>
+            Handles operations related to interests, such as adding interests and managing user interests.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.InterestsController.GetCurrentUserId">
+            <summary>
+            Gets the current authenticated user's ID from the JWT claims.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.InterestsController.AddInterest(CORE.DTOs.Interest.InterestAddRequest)">
+            <summary>
+            Adds a new interest to the system.
+            </summary>
+            <remarks>
+            Creates a new interest if it doesn't already exist (based on name).
+            </remarks>
+            <param name="request">The interest details to add.</param>
+            <returns>The created or existing interest.</returns>
+        </member>
+        <member name="M:API.Controllers.InterestsController.AddUserInterest(CORE.DTOs.Interest.UserInterestAddRequest)">
+            <summary>
+            Assigns an interest to the current user.
+            </summary>
+            <remarks>
+            Links the specified interest to the authenticated user if not already linked.
+            </remarks>
+            <param name="request">The user interest details, including user ID and interest ID.</param>
+            <returns>The created user interest.</returns>
+            <response code="200">Returns the user interest details</response>
+            <response code="401">If the user is not authorized to add interests for themselves</response>
+            <response code="404">If the user or interest is not found</response>
+        </member>
+        <member name="M:API.Controllers.InterestsController.GetUserInterests">
+            <summary>
+            Retrieves all interests associated with the current user.
+            </summary>
+            <remarks>
+            Returns a list of interests the authenticated user has selected.
+            </remarks>
+            <returns>A list of user interests.</returns>
+            <response code="200">Returns the list of interests</response>
+            <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="T:API.Controllers.MatchingController">
+            <summary>
+            Handles operations related to user matching, such as finding, retrieving, and ending matches
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MatchingController.GetCurrentUserId">
+            <summary>
+            Gets the current authenticated user's ID from the JWT claims.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.MatchingController.FindMatch(CORE.DTOs.UserMatch.UserMatchRequest)">
+            <summary>
+            Initiates a match request for the current user based on the specified match type.
+            </summary>
+            <remarks>
+            Finds a compatible user based on language preferences, shared interests, and online status.
+            Match types can be "text", "voice", or "video".
+            </remarks>
+            <param name="request">The match request containing the user ID and match type.</param>
+            <returns>The created match details.</returns>
+            <response code="200">Returns the match details</response>
+            <response code="401">If the user is not authenticated or requests a match for another user</response>
+            <response code="404">If no suitable match is found</response>
+        </member>
+        <member name="M:API.Controllers.MatchingController.GetMatches">
+            <summary>
+            Retrieves all active matches for the current user.
+            </summary>
+            <remarks>
+            Returns a list of active matches, including details of the matched users and match type.
+            </remarks>
+            <returns>A list of active matches.</returns>
+            <response code="200">Returns the list of matches</response>
+        </member>
+        <member name="M:API.Controllers.MatchingController.EndMatch(System.Int32)">
+            <summary>
+            Ends an active match by its ID.
+            </summary>
+            <remarks>
+            Only the user involved in the match can end it. Sets the match's IsActive to false.
+            </remarks>
+            <param name="matchId">The ID of the match to end.</param>
+            <returns>No content if successful, or bad request if failed.</returns>
+            <response code="204">If the match was successfully ended</response>
+            <response code="401">If the user is not authorized to end the match</response>
+            <response code="404">If the match is not found</response>
+        </member>
         <member name="T:API.Controllers.MessagesController">
             <summary>
             Handles operations related to messages, such as sending, retrieving, deleting, and marking messages as read.

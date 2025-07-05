@@ -13,6 +13,9 @@ namespace DATA.DataAccess.Context
         public DbSet<LanguagePreference> LanguagePreferences { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Message> Messages {  get; set; }
+        public DbSet<Interest> Interests { get; set; }
+        public DbSet<UserInterest> UserInterests { get; set; }
+        public DbSet<UserMatch> UserMatches { get; set; }
         public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

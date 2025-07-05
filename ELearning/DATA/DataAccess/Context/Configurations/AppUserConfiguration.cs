@@ -18,20 +18,20 @@ namespace DATA.DataAccess.Context.Configurations
 
             builder.Property(x => x.ImagePath).IsRequired(false);
             builder.Property(x => x.Bio).IsRequired(false);
-            builder.HasMany(x => x.LanguagePreferences).WithMany(x => x.LanguagePreferences)
-                .UsingEntity<LanguagePreference>(
-                    j => j
-                        .HasOne(l => l.Language)
-                        .WithMany()
-                        .HasForeignKey(l => l.LanguageId),
-                    j => j
-                        .HasOne(u => u.AppUser)
-                        .WithMany()
-                        .HasForeignKey(u => u.UserId),
-                    j =>
-                    {
-                        j.HasKey(t => new { t.UserId, t.LanguageId });
-                    });
+            builder.Property(x=>x.IsOnline).IsRequired().HasDefaultValue(false);
+            builder.HasMany(x=>x.UserInterests)
+                .WithOne(ui=>ui.User)
+                .HasForeignKey(ui=>ui.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x=>x.MatchesAsUser1)
+                .WithOne(um=>um.User1)
+                .HasForeignKey(um=>um.UserId1)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(x=>x.MatchesAsUser2)
+                .WithOne(um=>um.User2)
+                .HasForeignKey(um=>um.UserId2)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

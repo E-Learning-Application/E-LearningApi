@@ -120,6 +120,9 @@ namespace API
             builder.Services.AddScoped<IReportService, ReportService>();
             builder.Services.AddScoped<IFeedbackService, FeedbackService>();
             builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<IInterestService, InterestService>();
+            builder.Services.AddScoped<IMatchingService, MatchingService>();
+
 
             builder.Services.AddMemoryCache();
             builder.Services.AddEndpointsApiExplorer();

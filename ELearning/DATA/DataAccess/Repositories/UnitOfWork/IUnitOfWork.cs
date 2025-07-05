@@ -16,6 +16,9 @@ namespace DATA.DataAccess.Repositories.UnitOfWork
         IBaseRepository<Report> Reports { get; }
         IBaseRepository<Feedback> Feedbacks { get; }
         IBaseRepository<Message> Messages { get; }
+        IBaseRepository<Interest> Interests { get; }
+        IBaseRepository<UserInterest> UserInterests { get; }
+        IBaseRepository<UserMatch> UserMatches { get; }
 
         Task<int> CommitAsync();
 
