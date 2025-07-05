@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DATA.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250701130253_adding-MessageTable")]
-    partial class addingMessageTable
+    [Migration("20250705230702_seedAdmin")]
+    partial class seedAdmin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,11 @@ namespace DATA.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsOnline")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -132,6 +137,24 @@ namespace DATA.Migrations
                     b.ToTable("Feedbacks");
                 });
 
+            modelBuilder.Entity("DATA.Models.Interest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Interests", (string)null);
+                });
+
             modelBuilder.Entity("DATA.Models.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -142,15 +165,17 @@ namespace DATA.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("DATA.Models.LanguagePreference", b =>
@@ -171,7 +196,7 @@ namespace DATA.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("LanguagePreferences");
+                    b.ToTable("LanguagePreferences", (string)null);
                 });
 
             modelBuilder.Entity("DATA.Models.Message", b =>
@@ -242,6 +267,58 @@ namespace DATA.Migrations
                     b.HasIndex("ReporterId");
 
                     b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("DATA.Models.UserInterest", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InterestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "InterestId");
+
+                    b.HasIndex("InterestId");
+
+                    b.ToTable("UserInterests", (string)null);
+                });
+
+            modelBuilder.Entity("DATA.Models.UserMatch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("MatchScore")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MatchType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("UserId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId2")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId1");
+
+                    b.HasIndex("UserId2");
+
+                    b.ToTable("UserMatches", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -428,13 +505,13 @@ namespace DATA.Migrations
             modelBuilder.Entity("DATA.Models.LanguagePreference", b =>
                 {
                     b.HasOne("DATA.Models.Language", "Language")
-                        .WithMany()
+                        .WithMany("LanguagePreferences")
                         .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DATA.Models.AppUser", "AppUser")
-                        .WithMany()
+                        .WithMany("LanguagePreferences")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -480,6 +557,44 @@ namespace DATA.Migrations
                     b.Navigation("Reported");
 
                     b.Navigation("Reporter");
+                });
+
+            modelBuilder.Entity("DATA.Models.UserInterest", b =>
+                {
+                    b.HasOne("DATA.Models.Interest", "Interest")
+                        .WithMany("UserInterests")
+                        .HasForeignKey("InterestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DATA.Models.AppUser", "User")
+                        .WithMany("UserInterests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Interest");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DATA.Models.UserMatch", b =>
+                {
+                    b.HasOne("DATA.Models.AppUser", "User1")
+                        .WithMany("MatchesAsUser1")
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DATA.Models.AppUser", "User2")
+                        .WithMany("MatchesAsUser2")
+                        .HasForeignKey("UserId2")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User1");
+
+                    b.Navigation("User2");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -537,6 +652,12 @@ namespace DATA.Migrations
                 {
                     b.Navigation("Feedbacks");
 
+                    b.Navigation("LanguagePreferences");
+
+                    b.Navigation("MatchesAsUser1");
+
+                    b.Navigation("MatchesAsUser2");
+
                     b.Navigation("MessagesReceived");
 
                     b.Navigation("MessagesSent");
@@ -544,6 +665,18 @@ namespace DATA.Migrations
                     b.Navigation("ReportsMade");
 
                     b.Navigation("ReportsReceived");
+
+                    b.Navigation("UserInterests");
+                });
+
+            modelBuilder.Entity("DATA.Models.Interest", b =>
+                {
+                    b.Navigation("UserInterests");
+                });
+
+            modelBuilder.Entity("DATA.Models.Language", b =>
+                {
+                    b.Navigation("LanguagePreferences");
                 });
 #pragma warning restore 612, 618
         }
