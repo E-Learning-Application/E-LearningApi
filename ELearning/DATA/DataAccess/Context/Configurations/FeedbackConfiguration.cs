@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using DATA.Models;
@@ -13,10 +14,18 @@ namespace DATA.DataAccess.Context.Configurations
     {
         public void Configure(EntityTypeBuilder<Feedback> builder)
         {
-            builder.HasOne(f => f.User)
-                .WithMany(u => u.Feedbacks)
-                .HasForeignKey(f => f.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(f => f.Feedbacker)
+                .WithMany(u => u.GivenFeedbacks)
+                .HasForeignKey(f => f.FeedbackerId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
+
+            builder.HasOne(f => f.Feedbacked)
+                .WithMany(u => u.ReceivedFeedbacks)
+                .HasForeignKey(f => f.FeedbackedId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
+
+            // Ensure a user cannot feedback themselves
+            builder.HasCheckConstraint("CK_Feedback_NoSelfFeedback", "FeedbackerId != FeedbackedId");
         }
     }
 }

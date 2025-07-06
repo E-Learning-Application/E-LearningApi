@@ -28,9 +28,16 @@ namespace CORE.Services
                     Message = "Rating must be between 1 and 5."
                 };
 
+            if(await _unitOfWork.AppUsers.CheckAnyAsync(f => f.Id == feedbackDto.FeedbackedId, null) == false)
+                return new ResponseDto<GetFeedbackDto>
+                {
+                    StatusCode = StatusCodes.BadRequest,
+                    Message = "Feedbacked user does not exist."
+                };
+
             var feedback = _mapper.Map<Feedback>(feedbackDto);
 
-            feedback.UserId = feedbackerId;
+            feedback.FeedbackerId = feedbackerId;
 
             await _unitOfWork.Feedbacks.AddOrUpdateAsync(feedback);
             var changes = await _unitOfWork.CommitAsync();
@@ -58,7 +65,7 @@ namespace CORE.Services
                     StatusCode = StatusCodes.BadRequest,
                     Message = "Feedback not found."
                 };
-            if (feedback.UserId != userId)
+            if (feedback.FeedbackerId != userId)
                 return new ResponseDto<object>
                 {
                     StatusCode = StatusCodes.Forbidden,
@@ -79,9 +86,9 @@ namespace CORE.Services
             };
         }
 
-        public async Task<ResponseDto<List<GetFeedbackDto>>> GetAllFeedbacksAsync(int feedbackerId)
+        public async Task<ResponseDto<List<GetFeedbackDto>>> GetAllFeedbacksAsync(int feedbackedId)
         {
-            var feedbacks = await _unitOfWork.Feedbacks.GetAllAsync(f => f.UserId == feedbackerId);
+            var feedbacks = await _unitOfWork.Feedbacks.GetAllAsync(f => f.FeedbackedId == feedbackedId);
             var feedbackDtos = _mapper.Map<List<GetFeedbackDto>>(feedbacks);
             return new ResponseDto<List<GetFeedbackDto>>
             {
@@ -100,7 +107,7 @@ namespace CORE.Services
                     StatusCode = StatusCodes.BadRequest,
                     Message = "Feedback not found."
                 };
-            if (feedback.UserId != userId)
+            if (feedback.FeedbackerId != userId)
                 return new ResponseDto<GetFeedbackDto>
                 {
                     StatusCode = StatusCodes.Forbidden,
