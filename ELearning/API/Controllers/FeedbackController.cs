@@ -29,9 +29,9 @@ namespace API.Controllers
         }
         [HttpGet("all")]
         [Authorize]
-        public async Task<IActionResult> GetAllFeedbacksAsync(int userId)
+        public async Task<IActionResult> GetAllFeedbacksAsync(int feedbackedId)
         {
-            var result = await _feedbackService.GetAllFeedbacksAsync(userId);
+            var result = await _feedbackService.GetAllFeedbacksAsync(feedbackedId);
             return StatusCode(result.StatusCode, result);
         }
         [HttpDelete]
