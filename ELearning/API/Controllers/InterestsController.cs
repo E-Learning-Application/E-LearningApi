@@ -40,6 +40,21 @@ namespace API.Controllers
             var interest = await _interestService.AddInterestAsync(request);
             return Ok(interest);
         }
+        /// <summary>
+        /// Retrieves all available interests in the system.
+        /// </summary>
+        /// <remarks>
+        /// Returns a list of all interests, allowing clients to view available options for selection.
+        /// </remarks>
+        /// <returns>A list of all interests.</returns>
+        /// <response code="200">Returns the list of all interests</response>
+        /// <response code="401">If the user is not authenticated</response>
+        [HttpGet]
+        public async Task<IActionResult> GetAllInterests()
+        {
+            var interests = await _interestService.GetInterestsAsync();
+            return Ok(interests);
+        }
 
         /// <summary>
         /// Assigns an interest to the current user.
