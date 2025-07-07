@@ -24,6 +24,17 @@
             <param name="request">The interest details to add.</param>
             <returns>The created or existing interest.</returns>
         </member>
+        <member name="M:API.Controllers.InterestsController.GetAllInterests">
+            <summary>
+            Retrieves all available interests in the system.
+            </summary>
+            <remarks>
+            Returns a list of all interests, allowing clients to view available options for selection.
+            </remarks>
+            <returns>A list of all interests.</returns>
+            <response code="200">Returns the list of all interests</response>
+            <response code="401">If the user is not authenticated</response>
+        </member>
         <member name="M:API.Controllers.InterestsController.AddUserInterest(CORE.DTOs.Interest.UserInterestAddRequest)">
             <summary>
             Assigns an interest to the current user.

@@ -45,13 +45,19 @@ namespace CORE.Services
             return _mapper.Map<UserInterestResponse>(userInterest);
         }
 
-        public async Task<IEnumerable<InterestResponse>> GetUserInterestsAsync(int userId)
+        public async Task<IEnumerable<InterestResponse>> GetInterestsAsync()
+        {
+            var interests = await _unitOfWork.Interests.GetAllAsync(i=>true);
+            return _mapper.Map<IEnumerable<InterestResponse>>(interests);
+        }
+
+        public async Task<IEnumerable<UserInterestResponse>> GetUserInterestsAsync(int userId)
         {
             var userInterests = await _unitOfWork.UserInterests.GetAllAsync(
                 ui => ui.UserId == userId,
-                includes: new[] { "Interest" });
+                includes: new[] { "Interest","User" });
 
-            return _mapper.Map<IEnumerable<InterestResponse>>(userInterests.Select(ui => ui.Interest));
+            return _mapper.Map<IEnumerable<UserInterestResponse>>(userInterests);
         }
     }
 }
