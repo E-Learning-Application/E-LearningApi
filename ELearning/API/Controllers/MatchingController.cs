@@ -1,5 +1,6 @@
 ﻿using CORE.DTOs.UserMatch;
 using CORE.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -10,6 +11,7 @@ namespace API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MatchingController : ControllerBase
     {
         private readonly IMatchingService _matchingService;

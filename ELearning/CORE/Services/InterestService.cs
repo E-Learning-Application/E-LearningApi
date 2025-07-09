@@ -4,6 +4,7 @@ using CORE.Exceptions;
 using CORE.Services.IServices;
 using DATA.DataAccess.Repositories.UnitOfWork;
 using DATA.Models;
+using System.Threading.Channels;
 
 namespace CORE.Services
 {
@@ -38,16 +39,17 @@ namespace CORE.Services
 
             var userInterest = _mapper.Map<UserInterest>(request);
             await _unitOfWork.UserInterests.AddOrUpdateAsync(userInterest);
-            await _unitOfWork.CommitAsync();
+            int changes = await _unitOfWork.CommitAsync();
+            if (changes == 0)
+                throw new Exception("Failed to save UserInterest to database.");
 
             userInterest.User = user;
             userInterest.Interest = interest;
             return _mapper.Map<UserInterestResponse>(userInterest);
         }
-
         public async Task<IEnumerable<InterestResponse>> GetInterestsAsync()
         {
-            var interests = await _unitOfWork.Interests.GetAllAsync(i=>true);
+            var interests = await _unitOfWork.Interests.GetAllAsync(i => true);
             return _mapper.Map<IEnumerable<InterestResponse>>(interests);
         }
 
@@ -55,7 +57,7 @@ namespace CORE.Services
         {
             var userInterests = await _unitOfWork.UserInterests.GetAllAsync(
                 ui => ui.UserId == userId,
-                includes: new[] { "Interest","User" });
+                includes: new[] { "Interest", "User" });
 
             return _mapper.Map<IEnumerable<UserInterestResponse>>(userInterests);
         }
