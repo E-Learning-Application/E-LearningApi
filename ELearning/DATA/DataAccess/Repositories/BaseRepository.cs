@@ -16,7 +16,19 @@ namespace DATA.DataAccess.Repositories
 
         public async Task<T> AddOrUpdateAsync(T entity)
         {
-            _context.Set<T>().Update(entity);
+            var entry = _context.Entry(entity);
+            var keyProperties = entry.Metadata.FindPrimaryKey()?.Properties;
+            if (keyProperties != null)
+            {
+                var keyValues = keyProperties.Select(p => entry.Property(p.Name).CurrentValue).ToArray();
+                var existing = await _context.Set<T>().FindAsync(keyValues);
+                if (existing == null)
+                    _context.Set<T>().Add(entity);
+                else
+                    _context.Set<T>().Update(entity);
+            }
+            else
+                _context.Set<T>().Add(entity);
             return entity;
         }
 

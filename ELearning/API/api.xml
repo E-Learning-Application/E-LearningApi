@@ -14,16 +14,6 @@
             Gets the current authenticated user's ID from the JWT claims.
             </summary>
         </member>
-        <member name="M:API.Controllers.InterestsController.AddInterest(CORE.DTOs.Interest.InterestAddRequest)">
-            <summary>
-            Adds a new interest to the system.
-            </summary>
-            <remarks>
-            Creates a new interest if it doesn't already exist (based on name).
-            </remarks>
-            <param name="request">The interest details to add.</param>
-            <returns>The created or existing interest.</returns>
-        </member>
         <member name="M:API.Controllers.InterestsController.GetAllInterests">
             <summary>
             Retrieves all available interests in the system.
@@ -34,6 +24,16 @@
             <returns>A list of all interests.</returns>
             <response code="200">Returns the list of all interests</response>
             <response code="401">If the user is not authenticated</response>
+        </member>
+        <member name="M:API.Controllers.InterestsController.AddInterest(CORE.DTOs.Interest.InterestAddRequest)">
+            <summary>
+            Adds a new interest to the system.
+            </summary>
+            <remarks>
+            Creates a new interest if it doesn't already exist (based on name).
+            </remarks>
+            <param name="request">The interest details to add.</param>
+            <returns>The created or existing interest.</returns>
         </member>
         <member name="M:API.Controllers.InterestsController.AddUserInterest(CORE.DTOs.Interest.UserInterestAddRequest)">
             <summary>

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CORE.DTOs.Interest;
 using CORE.DTOs.UserMatch;
 using CORE.Exceptions;
 using CORE.Services.IServices;
@@ -104,7 +103,7 @@ namespace CORE.Services
             return changes > 0;
         }
 
-       
+
 
         private double CalculateMatchScore(AppUser user1, AppUser user2)
         {
@@ -134,9 +133,9 @@ namespace CORE.Services
             {
                 foreach (var pref2 in user2Prefs)
                 {
-                    if (pref1.Id == pref2.Id && pref1.IsLearning != pref2.IsLearning)
+                    if (pref1.Id == pref2.Id)
                     {
-                        // Complementary proficiency (e.g., native vs. learning)
+                        // Complementary proficiency (e.g., native vs. Basic)
                         double proficiencyScore = pref1.ProficiencyLevel == LanguageProficiencyLevel.Native && pref2.ProficiencyLevel != LanguageProficiencyLevel.Native ? 0.5 : 0.3;
                         score += proficiencyScore;
                     }
@@ -149,7 +148,7 @@ namespace CORE.Services
             var sharedInterests = user1Interests.Intersect(user2Interests).Count();
             score += (sharedInterests * 0.1); // 0.1 per shared interest
 
-            return Math.Min(score, 1.0); // Normalize to 0-1
+            return Math.Min(score, 1.0);
         }
     }
 }
