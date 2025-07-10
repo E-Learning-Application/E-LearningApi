@@ -4,7 +4,7 @@
     {
         public int SenderID { get; set; }
         public int ReceiverID { get; set; }
-        public string Message { get; set; }
+        public string Content { get; set; }
 
     }
 }

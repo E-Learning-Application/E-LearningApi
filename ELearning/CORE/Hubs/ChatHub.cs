@@ -52,7 +52,7 @@ namespace CORE.Hubs
             {
                 SenderID = senderId,
                 ReceiverID = receiverId,
-                Message = content
+                Content = content
             };
 
             var savedMessage = await _messageService.CreateAsync(request);
