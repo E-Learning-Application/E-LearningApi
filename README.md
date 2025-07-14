@@ -75,7 +75,7 @@ You can run the E-Learning API using Docker and Docker Compose for easy setup an
 
 1. **Clone the repository**  
    ```bash
-   git clone https://github.com/your-username/e-learning-api.git
+   git clone https://github.com/E-Learning-Application/E-LearningApi.git
 2. **Build and start the containers**
    
     From the root directory (where the `docker-compose.yml` file is located), run:
