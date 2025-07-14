@@ -90,7 +90,7 @@ You can run the E-Learning API using Docker and Docker Compose for easy setup an
 
    Navigate to:
    ```bash
-   http://localhost:8080/swagger
+   http://localhost:8080/swagger/index.html
    ```
    to explore and test the available API endpoints.
 ### Notes
